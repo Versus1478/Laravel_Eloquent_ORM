@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -145,6 +146,35 @@ class NoteController extends Controller
         $notes = Note::searchPublished($q);
 
         return response()->json(['query' => $q, 'notes' => $notes], Response::HTTP_OK);
+    }
+
+    public function pin(string $id) {
+        $note = Note::find($id);
+        if (!$note) {
+            return response()->json([
+                'message' => "Poznamka nenajdena"
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $note->pin();
+        return response()->json([
+            'message' => "Poznamka bola pripnuta",
+            'note' => $note,
+        ]);
+    }
+
+    public function unpin(string $id) {
+        $note = Note::find($id);
+        if (!$note) {
+            return response()->json([
+                'message' => "Poznamka nenajdena"
+            ], Response::HTTP_NOT_FOUND);
+        }
+        $note->unpin();
+        return response()->json([
+            'message' => "Poznamka bola odopnuta",
+            'note' => $note,
+        ]);
     }
 
 }

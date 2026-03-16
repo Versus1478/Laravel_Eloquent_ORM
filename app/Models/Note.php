@@ -56,4 +56,12 @@ class Note extends Model
             ->get();
     }
 
+    public function pin() {
+        $this->update(['is_pinned' => true]);
+    }
+
+    public function unpin() {
+        $this->update(['is_pinned' => false]);
+    }
+
 }

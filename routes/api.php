@@ -12,3 +12,6 @@ Route::get('users/{user}/notes', [NoteController::class, 'userNotesWithCategorie
 
 Route::apiResource('notes', NoteController::class);
 Route::apiResource('categories', CategoryController::class);
+
+Route::patch('notes/{id}/pin', [NoteController::class, 'pin']);
+Route::patch('notes/{id}/unpin', [NoteController::class, 'unpin']);
