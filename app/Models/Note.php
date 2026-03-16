@@ -68,4 +68,24 @@ class Note extends Model
         return static::where('user_id', $userId)->count();
     }
 
+    public function scopePinned($query) {
+        return $query->where('is_pinned', true);
+    }
+
+    public function scopePublished($query) {
+        return $query->where('status', 'published');
+    }
+
+    public function scopeDraft($query) {
+        return $query->where('status', 'draft');
+    }
+
+    public function scopeRecent($query, int $days = 7) {
+        return $query->where('updated_at', '>=', now()->subDays($days));
+    }
+
+    public function scopeUser($query, int $userId) {
+        return $query->where('user_id', $userId);
+    }
+
 }

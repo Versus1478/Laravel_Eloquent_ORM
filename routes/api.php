@@ -5,7 +5,7 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('notes/stats/status', [NoteController::class, 'statsByStatus']);
-Route::get('notes/pinned', [NoteController::class, 'pinned']);
+//Route::get('notes/pinned', [NoteController::class, 'pinned']);
 Route::get('notes-actions/search', [NoteController::class, 'search']);
 Route::patch('notes/actions/archive-old-drafts', [NoteController::class, 'archiveOldDrafts']);
 Route::get('users/{user}/notes', [NoteController::class, 'userNotesWithCategories']);
@@ -20,3 +20,8 @@ Route::patch('notes/{id}/archive', [NoteController::class, 'archive']);
 Route::patch('notes/{id}/publish', [NoteController::class, 'publish']);
 
 Route::patch('users/{user}/notes/count', [NoteController::class, 'userNoteCount']);
+
+Route::get('notes/pinned', [NoteController::class, 'pinnedNotes']);
+Route::get('notes/recent/{days?}', [NoteController::class, 'recentNotes']);
+Route::get('users/{user}/draft-notes', [NoteController::class, 'userDraftNotes']);
+

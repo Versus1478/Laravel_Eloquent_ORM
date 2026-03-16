@@ -213,4 +213,18 @@ class NoteController extends Controller
         ],Response::HTTP_OK);
     }
 
+    public function pinnedNotes() {
+        $notes = Note::pinned()->orderBy('updated_at', 'desc')->get();
+        return response()->json(['notes' => $notes], Response::HTTP_OK);
+    }
+
+    public function recentNotes(int $days = 7) {
+        $notes = Note::recent($days)->orderBy('updated_at', 'desc')->get();
+        return response()->json(['notes' => $notes], Response::HTTP_OK);
+    }
+
+    public function userDraftNotes(string $userId) {
+        $notes = Note::user($userId)->draft()->orderBy('updated_at', 'desc')->get();
+        return response()->json(['notes' => $notes], Response::HTTP_OK);
+    }
 }
