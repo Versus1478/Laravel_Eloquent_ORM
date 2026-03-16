@@ -97,10 +97,10 @@ class NoteController extends Controller
     // vlastné metódy - QB
     public function statsByStatus()
     {
-        $stats = DB::table('notes')
-            ->whereNull('deleted_at')
-            ->select('status', DB::raw('COUNT(*) as count'))
+        $stats = Note::whereNull('deleted_at')
             ->groupBy('status')
+            ->select('status')
+            ->selectRaw('COUNT(*) as count')
             ->orderBy('status')
             ->get();
 
@@ -109,9 +109,8 @@ class NoteController extends Controller
 
     public function archiveOldDrafts()
     {
-        $affected = DB::table('notes')
-            ->whereNull('deleted_at')
-            ->where('status', 'draft')
+        $affected = Note::query()
+            ->draft()
             ->where('updated_at', '<', now()->subDays(30))
             ->update([
                 'status' => 'archived',
@@ -126,16 +125,19 @@ class NoteController extends Controller
 
     public function userNotesWithCategories(string $userId)
     {
-        $rows = DB::table('notes')
-            ->join('note_category', 'notes.id', '=', 'note_category.note_id')
-            ->join('categories', 'note_category.category_id', '=', 'categories.id')
-            ->where('notes.user_id', $userId)
-            ->whereNull('notes.deleted_at')
-            ->orderBy('notes.updated_at', 'desc')
-            ->select('notes.id', 'notes.title', 'categories.name as category')
-            ->get();
+        $notes = Note::with('categories')
+            ->where('user_id', $userId)
+            ->orderByDesc('updated_at')
+            ->get()
+            ->map(function($note) {
+                return [
+                    'id' => $note->id,
+                    'title' => $note->title,
+                    'categories' => $note->categories->pluck('name'),
+                ];
+            });
 
-        return response()->json(['notes' => $rows], Response::HTTP_OK);
+        return response()->json(['notes' => $notes], Response::HTTP_OK);
     }
 
     // ORM

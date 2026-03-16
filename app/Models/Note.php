@@ -88,4 +88,9 @@ class Note extends Model
         return $query->where('user_id', $userId);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'note_category', 'note_id', 'category_id');
+    }
+
 }
