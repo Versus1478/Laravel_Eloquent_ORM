@@ -205,4 +205,12 @@ class NoteController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function userNoteCount(string $userId) {
+        $count = Note::countByUser($userId);
+        return response()->json([
+            'note_count' => $count,
+            'user_id' => $userId,
+        ],Response::HTTP_OK);
+    }
+
 }

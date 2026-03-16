@@ -18,3 +18,5 @@ Route::patch('notes/{id}/unpin', [NoteController::class, 'unpin']);
 
 Route::patch('notes/{id}/archive', [NoteController::class, 'archive']);
 Route::patch('notes/{id}/publish', [NoteController::class, 'publish']);
+
+Route::patch('users/{user}/notes/count', [NoteController::class, 'userNoteCount']);

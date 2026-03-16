@@ -64,4 +64,8 @@ class Note extends Model
         $this->update(['is_pinned' => false]);
     }
 
+    public static function countByUser(int $userId): int {
+        return static::where('user_id', $userId)->count();
+    }
+
 }
