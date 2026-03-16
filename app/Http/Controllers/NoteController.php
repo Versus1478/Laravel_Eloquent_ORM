@@ -177,4 +177,32 @@ class NoteController extends Controller
         ]);
     }
 
+    public function archive(string $id) {
+        $note = Note::find($id);
+        if (!$note) {
+            return response()->json([
+                'message' => "Poznamka nenajdena"
+            ], Response::HTTP_NOT_FOUND);
+        }
+        $note->archive();
+        return response()->json([
+            'message' => "Poznamka bola archivovana",
+            'note' => $note,
+        ], Response::HTTP_OK);
+    }
+
+    public function publish(string $id) {
+        $note = Note::find($id);
+        if (!$note) {
+            return response()->json([
+                'message' => "Poznamka nenajdena"
+            ], Response::HTTP_NOT_FOUND);
+        }
+        $note->publish();
+        return response()->json([
+            'message' => "Poznamka bola publikovana",
+            'note' => $note,
+        ], Response::HTTP_OK);
+    }
+
 }
